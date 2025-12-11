@@ -1,0 +1,146 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Custom CSS to adjust the left margin of the button */
+.modal-content .btn-login {
+  margin-left: 2rem; /* Adjust the margin as needed */
+}
+
+/* Custom CSS to adjust the width of the "Login" button */
+.custom-button-width {
+  width: 200px; /* Adjust the width to your desired value */
+}
+
+.center-button {
+  text-align: center;
+}
+
+.navbar {
+  background-color: rgb(12, 153, 17);
+  /* You can use any valid CSS color here */
+}
+
+.custom-btn-color {
+  background-color: white; /* Replace with your desired custom color */
+  color: rgb(12, 153, 17); /* Text color */
+  /* You can add additional styles as needed */
+}
+
+.custom-text-color {
+  color: rgb(12, 153, 17); /* Text color */
+  /* You can add additional styles as needed */
+}
+
+.custom-spacing {
+  margin-right: 10px; /* Adjust the margin value as needed */
+}
+
+.custom-button-border {
+  border: 2px solid #005634; /* Change #FF0000 to your desired border color */
+  background-color: transparent; /* Make the background transparent to show the border color */
+  color: #007020; /* Change #FF0000 to your desired text color */
+}
+.custom-left-margin {
+  margin-left: 20px; /* Adjust the margin value as needed */
+}
+
+.custom-left-margin-button1 {
+  margin-left: 350px; /* Adjust the margin value as needed */
+}
+
+.custom-left-margin-button2 {
+  margin-left: 10px; /* Adjust the margin value as needed */
+}
+
+.carousel-item img {
+  max-width: 1000px; /* Adjust the value as needed */
+  height: 400px; /* Maintain aspect ratio */
+}
+
+.custom-carousel {
+  max-width: 1000px; /* Adjust the value as needed */
+  margin-top: 50px; /* Center the carousel horizontally */
+}
+
+.kalam-font {
+  font-family: 'Kalam', cursive;
+}
+
+.roboto-font{
+  color: 'green';
+  font-Family: 'Roboto', sans-serif;
+}
+
+.solution-image{
+  max-width: 100%; /* Adjust the value as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.custom-card {
+  max-width: 400px; /* Adjust the maximum width as needed */
+  margin: 0 auto; /* Center the card horizontally */
+}
+
+.custom-margin-top {
+  margin-top: 100px;
+}
+
+.custom-margin-bottom {
+  margin-bottom: 50px;
+}
+
+.smaller-font {
+  font-size: 12px; /* Adjust the size as needed */
+}
+
+.custom-margin-top-1 {
+  margin-top: 50px;
+}
+
+.blank-height {
+  height: 500px;
+}
+
+.user-margin {
+  margin-right: 50px;
+}
+
+.custom-text-container {
+  max-width: 820px; /* Adjust the max-width as needed */
+  overflow-x: auto; /* Add horizontal scrollbar if content overflows */
+}
