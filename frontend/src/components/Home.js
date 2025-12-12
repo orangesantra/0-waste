@@ -1,217 +1,238 @@
-import React, {useState} from 'react'
-import i3 from '../Assets/i3.jpg'
-import Toast from './Toast';
-
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useWeb3 } from '../context/Web3Context';
 
 export default function Home() {
-
-    const[contactQueryData, setContactQueryData] = useState("")
-    const[showToast, setShowToast] = useState(false)
- 
-    const onChangeHandler =(e) =>{
-        setContactQueryData(e.target.value)
-    }
-
-    const onSubmitHandler = () =>{
-       // Send the data to Backend
-
-       // Toast componet
-       setShowToast(true);
-    }
-
+  const { connected } = useWeb3();
 
   return (
     <>
-    <divc id = "problem" className= 'section container text-center'>
-        <div>
-            <h1 className='kalam-font mt-2'>We Feed the peoples in need!</h1>
-            <p className='display-4 fs-5 roboto-font custom-text-color'>NoWaste’s technology allows businesses to safely donate their excess food and access enhanced tax deductions.</p>
-        </div> 
-        <div className='container text-center'>
-        <div id="carouselExampleCaptions" className="carousel slide custom-carousel mx-auto" data-bs-ride="carousel">
-        <div className="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      {/* Hero Section */}
+      <section className="hero-section">
+        <div className="container">
+          <h1 className="hero-title">NoWaste Protocol</h1>
+          <p className="hero-subtitle">
+            Decentralized Food Waste Management on Polygon Blockchain
+          </p>
+          <p className="lead mb-4">
+            Turn food waste into environmental impact. Earn tokens, mint NFTs, and generate carbon credits.
+          </p>
+          {!connected ? (
+            <div className="mt-4">
+              <button className="btn btn-warning btn-lg me-3" onClick={() => alert('Please connect wallet using the button in navigation')}>
+                Connect Wallet to Get Started
+              </button>
+              <a href="#about" className="btn btn-outline-light btn-lg">
+                Learn More
+              </a>
+            </div>
+          ) : (
+            <div className="mt-4">
+              <Link to="/dashboard" className="btn btn-warning btn-lg me-3">
+                Go to Dashboard
+              </Link>
+              <Link to="/makedeal" className="btn btn-outline-light btn-lg">
+                Create Donation
+              </Link>
+            </div>
+          )}
         </div>
-        <div className="carousel-inner">
-            <div className="carousel-item active carousel-item img">
-            <img src={i3} className="d-block " alt="image1" />
-            <div className="carousel-caption d-none d-md-block">
-                <h5>First slide label</h5>
-                <p>Some representative placeholder content for the first slide.</p>
-            </div>
-            </div>
-            <div className="carousel-item carousel-item img">
-            <img src={i3} className="d-block " alt="image2" />
-            <div className="carousel-caption d-none d-md-block">
-                <h5>Second slide label</h5>
-                <p>Some representative placeholder content for the second slide.</p>
-            </div>
-            </div>
-            <div className="carousel-item carousel-item img">
-            <img src={i3} className="d-block " alt="image3" />
-            <div className="carousel-caption d-none d-md-block">
-                <h5>Third slide label</h5>
-                <p>Some representative placeholder content for the third slide.</p>
-            </div>
-            </div>
-        </div>
-        <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Previous</span>
-        </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
-            <span className="visually-hidden">Next</span>
-        </button>
-        </div>
-        </div> 
+      </section>
 
-    </divc>
-    <hr />
-    <div id = "solution" className='section container text-center custom-margin-top'>
-        <h2>How does NoWaste's solution works?</h2>
-        <div className="container custom-text-container">
-        <p className='container display-3 fs-5 roboto-font mt-4 custom-text-color'>
-        Food waste and hunger are inextricably linked issues, and NoWaste has developed the 
-        solution to that addresses both. Restaurants, hotels, hospitals, corporate cafeterias, 
-        and other businesses with food use our technology to deliver overproduced food items and reduce surplus 
-        food wastage, while ensuring that excess food is used to its highest and best potential.
-        </p>
-    </div>   
-    </div>
-    <hr />
-    <div className='row row justify-content-center custom-margin-top'>
-        <div className="col-md-7">
-        <div className="row row-cols-1 row-cols-md-2 g-0">
-        <div className="col">
-            <div className="card custom-card">
-            <img src={i3} className="card-img-top" alt="..."/>
-            <div className="card-body text-center">
-                <h5 className="card-title text-center">1</h5>
-                <p className="card-text roboto-font">Register on our platform.</p>
+      {/* Stats Section */}
+      <section className="stats-section">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-3 stat-item">
+              <div className="stat-number">$1.2T</div>
+              <div className="stat-label">Global Food Waste Annually</div>
             </div>
+            <div className="col-md-3 stat-item">
+              <div className="stat-number">1B</div>
+              <div className="stat-label">Total Token Supply</div>
             </div>
+            <div className="col-md-3 stat-item">
+              <div className="stat-number">2.5kg</div>
+              <div className="stat-label">CO₂ Saved per kg Food</div>
+            </div>
+            <div className="col-md-3 stat-item">
+              <div className="stat-number">0%</div>
+              <div className="stat-label">Platform Fees (2% on transactions)</div>
+            </div>
+          </div>
         </div>
-        <div className="col">
-            <div className="card custom-card">
-            <img src={i3} className="card-img-top" alt="..."/>
-            <div className="card-body text-center">
-                <h5 className="card-title text-center">2</h5>
-                <p className="card-text roboto-font">Inform us about your, leftout and remaining foods.</p>
-            </div>
-            </div>
+      </section>
+
+      {/* Features Section */}
+      <section id="about" className="container my-5">
+        <div className="text-center mb-5">
+          <h2 className="display-4 text-green">How It Works</h2>
+          <p className="lead text-muted">A blockchain-powered solution to food waste</p>
         </div>
-        <div className="col">
-            <div className="card custom-card">
-            <img src={i3} className="card-img-top" alt="..."/>
-            <div className="card-body text-center">
-                <h5 className="card-title text-center">3</h5>
-                <p className="card-text roboto-font"> We pickup the foods and distribute to nearby NGOs and shelters.</p>
+
+        <div className="row g-4">
+          {/* Restaurant */}
+          <div className="col-md-4">
+            <div className="card h-100 text-center">
+              <div className="card-body">
+                <div style={{ fontSize: '3rem' }} className="mb-3">🍽️</div>
+                <h4 className="card-title text-success">For Restaurants</h4>
+                <p className="card-text">
+                  List excess food on the platform. Stake 1000 NOWASTE tokens (refundable). 
+                  Earn rewards and tax benefits for each completed donation.
+                </p>
+                <ul className="list-unstyled text-start">
+                  <li>✓ Earn 100+ tokens per donation</li>
+                  <li>✓ Get Impact NFT certificates</li>
+                  <li>✓ Tax deduction documentation</li>
+                  <li>✓ Reputation-based multipliers</li>
+                </ul>
+              </div>
             </div>
+          </div>
+
+          {/* NGO */}
+          <div className="col-md-4">
+            <div className="card h-100 text-center">
+              <div className="card-body">
+                <div style={{ fontSize: '3rem' }} className="mb-3">🤝</div>
+                <h4 className="card-title text-success">For NGOs</h4>
+                <p className="card-text">
+                  Browse available donations and claim what you need. Stake 500 NOWASTE tokens. 
+                  Get free food for beneficiaries with transparent tracking.
+                </p>
+                <ul className="list-unstyled text-start">
+                  <li>✓ Earn 50+ tokens per claim</li>
+                  <li>✓ Free access to quality food</li>
+                  <li>✓ Verified impact reporting</li>
+                  <li>✓ No platform fees</li>
+                </ul>
+              </div>
             </div>
-        </div>
-        <div className="col">
-            <div className="card custom-card">
-            <img src={i3} className="card-img-top" alt="..."/>
-            <div className="card-body text-center">
-                <h5 className="card-title text-center">4</h5>
-                <p className="card-text roboto-font">Save the tax, by our authenticated govenment funnels and track the food wastages.</p>
+          </div>
+
+          {/* Courier */}
+          <div className="col-md-4">
+            <div className="card h-100 text-center">
+              <div className="card-body">
+                <div style={{ fontSize: '3rem' }} className="mb-3">🚚</div>
+                <h4 className="card-title text-success">For Couriers</h4>
+                <p className="card-text">
+                  Deliver food from restaurants to NGOs. Stake 750 NOWASTE tokens. 
+                  Earn rewards based on distance and reputation score.
+                </p>
+                <ul className="list-unstyled text-start">
+                  <li>✓ Earn 75+ tokens per delivery</li>
+                  <li>✓ Distance-based bonuses</li>
+                  <li>✓ Flexible work opportunities</li>
+                  <li>✓ Build reputation tier</li>
+                </ul>
+              </div>
             </div>
-            </div>
+          </div>
         </div>
-        </div>
-        </div>
-    </div>
-        <div className='container text-center custom-margin-top '>
-            <h2 className='mt-20'>Why Choose us?</h2>
-        </div>
-        <div className='row row justify-content-center custom-margin-top'>
-           <div className='col-md-9'>
-             <div className="card mb-3">
-                <div className="row g-0 mb-3">
-                    <div className="col-md-4">
-                    <img src={i3} className="img-fluid rounded-start h-100" alt="..."/>
-                    </div>
-                    <div className="col-md-8">
-                    <div className="card-body">
-                        <h5 className="card-title">Feed the Hunger</h5>
-                        <p className="card-text">By parterning with us, you contribute in eradicating hunger.</p>
-                    </div>
-                    </div>
+      </section>
+
+      {/* Tokenomics Section */}
+      <section className="bg-light py-5">
+        <div className="container">
+          <div className="text-center mb-5">
+            <h2 className="display-4 text-green">$NOWASTE Token</h2>
+            <p className="lead text-muted">Utility token powering the ecosystem</p>
+          </div>
+
+          <div className="row">
+            <div className="col-md-6 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Token Utility</h5>
+                  <ul>
+                    <li><strong>Staking:</strong> Required to participate in the platform</li>
+                    <li><strong>Rewards:</strong> Earn tokens for every successful deal</li>
+                    <li><strong>Governance:</strong> Vote on protocol changes (DAO)</li>
+                    <li><strong>Discounts:</strong> Pay fees in tokens for 50% discount</li>
+                    <li><strong>Revenue Sharing:</strong> Holders receive platform revenue</li>
+                  </ul>
                 </div>
-                <div className="row g-0 mb-3">
-                    <div className="col-md-4">
-                    <img src={i3} className="img-fluid rounded-start h-100" alt="..."/>
-                    </div>
-                    <div className="col-md-8">
-                    <div className="card-body">
-                        <h5 className="card-title">Reliable Service</h5>
-                        <p className="card-text">
-                        We offers a best-in-class, professional pickup service that ensures 
-                        your food is safely delivered to a nonprofit recipient.</p>
-                    </div>
-                    </div>
-                </div>
-                <div className="row g-0">
-                    <div className="col-md-4">
-                    <img src={i3} className="img-fluid rounded-start h-100" alt="..."/>
-                    </div>
-                    <div className="col-md-8">
-                    <div className="card-body">
-                        <h5 className="card-title">Access govenment verified tax deductions funnels.</h5>
-                        <p className="card-text">
-                            Our automated and audit-proof tax deduction service helps your business 
-                            in unmatched financial savings.</p>
-                    </div>
-                    </div>
-                </div>
-             </div>
+              </div>
             </div>
-        </div>
-        <div id = "contactus" className='section container text-center custom-margin-top'>
-            <h2>Any doubt? Contact us!</h2>
-        </div>
-        <div className='row row justify-content-center custom-margin-top-1'>
-            <div className='col-md-4'>
-            <form>
-              <div className="form-group">
-                <label htmlFor="contactName" className='roboto-font smaller-font'>Name</label>
-                <input type="text" className="form-control" id="contactName" placeholder="Name" />
+
+            <div className="col-md-6 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">Deflationary Mechanics</h5>
+                  <ul>
+                    <li><strong>1% Burn:</strong> Every transaction burns tokens</li>
+                    <li><strong>NFT Minting:</strong> 100 tokens burned per NFT</li>
+                    <li><strong>Treasury Buyback:</strong> 30% of revenue buys & burns tokens</li>
+                    <li><strong>Limited Supply:</strong> Max 1 billion tokens</li>
+                    <li><strong>Long-term Value:</strong> Decreasing supply over time</li>
+                  </ul>
+                </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="contactEmail" className='roboto-font smaller-font'>Email</label>
-                <input type="email" className="form-control" id="contactEmal" placeholder="Email" />
-              </div>
-              <div className="form-group">
-                <label htmlFor="contactPhone" className='roboto-font smaller-font'>Contact .no</label>
-                <input type="number" className="form-control" id="contactPhone" placeholder="Phone" />
-              </div>
-              <div className="form-group">
-                <label htmlFor="contactInfo" className='roboto-font smaller-font'>Enter your query below</label>
-                <textarea name="textarea" id="contactQuery" cols="62" rows="5"></textarea>
-              </div>
-              <div className="text-center custom-margin-bottom"> 
-                <button className="btn btn-success mt-2" value ={contactQueryData} onChange={onChangeHandler} onClick={onSubmitHandler}>Submit</button>
-              </div>
-            </form>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Impact Section */}
+      <section className="container my-5">
+        <div className="text-center mb-5">
+          <h2 className="display-4 text-green">Environmental Impact</h2>
+          <p className="lead text-muted">Real-world impact backed by blockchain</p>
         </div>
 
-        {
-            showToast? (
-                <>
-                {setShowToast(false)}
-                <Toast />
-                </>
-            ):("") 
-        }
+        <div className="row g-4">
+          <div className="col-md-4">
+            <div className="card text-center">
+              <div className="card-body">
+                <div style={{ fontSize: '3rem' }} className="mb-3">🌍</div>
+                <h4>Carbon Credits</h4>
+                <p>Every kg of food saved prevents 2.5kg of CO₂ emissions. These are converted into tradeable carbon credits.</p>
+              </div>
+            </div>
+          </div>
 
+          <div className="col-md-4">
+            <div className="card text-center">
+              <div className="card-body">
+                <div style={{ fontSize: '3rem' }} className="mb-3">🏆</div>
+                <h4>Impact NFTs</h4>
+                <p>Mint NFT certificates for each donation. Use them for tax deductions, ESG reporting, or trade on marketplaces.</p>
+              </div>
+            </div>
+          </div>
 
+          <div className="col-md-4">
+            <div className="card text-center">
+              <div className="card-body">
+                <div style={{ fontSize: '3rem' }} className="mb-3">📊</div>
+                <h4>Transparent Tracking</h4>
+                <p>All donations tracked on-chain with GPS verification, multi-signature confirmations, and IPFS proof storage.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-gradient-success text-white py-5 text-center">
+        <div className="container">
+          <h2 className="display-4 mb-4">Ready to Make an Impact?</h2>
+          <p className="lead mb-4">
+            Join the decentralized movement to eliminate food waste and feed those in need.
+          </p>
+          {!connected ? (
+            <button className="btn btn-warning btn-lg" onClick={() => alert('Please connect wallet using the button in navigation')}>
+              Connect Your Wallet
+            </button>
+          ) : (
+            <Link to="/dashboard" className="btn btn-warning btn-lg">
+              Go to Dashboard
+            </Link>
+          )}
+        </div>
+      </section>
     </>
-
-        
-
-  )
+  );
 }

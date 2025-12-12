@@ -1,120 +1,251 @@
+/* NoWaste Protocol - Modern Green Theme */
+
+/* Global Styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8f9fa;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
   min-height: 100vh;
+}
+
+/* Navbar Styles */
+.navbar.bg-gradient-green {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand .brand-logo {
+  font-size: 1.8rem;
+  margin-right: 10px;
+}
+
+.navbar-brand .brand-text {
+  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: -0.5px;
+}
+
+.wallet-btn {
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.wallet-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Styles */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Stat Cards */
+.stat-card {
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+}
+
+.bg-gradient-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+}
+
+.bg-gradient-info {
+  background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%);
+}
+}
+
+/* Badge Styles */
+.badge.bg-bronze { background-color: #cd7f32 !important; }
+.badge.bg-silver { background-color: #c0c0c0 !important; }
+.badge.bg-gold { background-color: #ffd700 !important; }
+.badge.bg-platinum { background-color: #e5e4e2 !important; color: #333 !important; }
+
+/* Deal Cards */
+.deal-card {
+  transition: all 0.3s ease;
+}
+
+.deal-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* NFT Cards */
+.nft-card {
+  overflow: hidden;
+}
+
+.nft-image-container {
+  height: 200px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-/* Custom CSS to adjust the left margin of the button */
-.modal-content .btn-login {
-  margin-left: 2rem; /* Adjust the margin as needed */
-}
-
-/* Custom CSS to adjust the width of the "Login" button */
-.custom-button-width {
-  width: 200px; /* Adjust the width to your desired value */
-}
-
-.center-button {
+.nft-placeholder {
   text-align: center;
 }
 
-.navbar {
-  background-color: rgb(12, 153, 17);
-  /* You can use any valid CSS color here */
+.nft-icon {
+  font-size: 4rem;
+  margin-bottom: 10px;
 }
 
-.custom-btn-color {
-  background-color: white; /* Replace with your desired custom color */
-  color: rgb(12, 153, 17); /* Text color */
-  /* You can add additional styles as needed */
+.nft-title {
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
-.custom-text-color {
-  color: rgb(12, 153, 17); /* Text color */
-  /* You can add additional styles as needed */
+/* Progress Bars */
+.progress {
+  border-radius: 10px;
+  height: 25px;
 }
 
-.custom-spacing {
-  margin-right: 10px; /* Adjust the margin value as needed */
+.progress-bar {
+  border-radius: 10px;
+  font-weight: 600;
 }
 
-.custom-button-border {
-  border: 2px solid #005634; /* Change #FF0000 to your desired border color */
-  background-color: transparent; /* Make the background transparent to show the border color */
-  color: #007020; /* Change #FF0000 to your desired text color */
-}
-.custom-left-margin {
-  margin-left: 20px; /* Adjust the margin value as needed */
-}
-
-.custom-left-margin-button1 {
-  margin-left: 350px; /* Adjust the margin value as needed */
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-.custom-left-margin-button2 {
-  margin-left: 10px; /* Adjust the margin value as needed */
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.carousel-item img {
-  max-width: 1000px; /* Adjust the value as needed */
-  height: 400px; /* Maintain aspect ratio */
+.btn-lg {
+  padding: 15px 30px;
+  font-size: 1.1rem;
 }
 
-.custom-carousel {
-  max-width: 1000px; /* Adjust the value as needed */
-  margin-top: 50px; /* Center the carousel horizontally */
+/* Alerts */
+.alert {
+  border-radius: 12px;
+  border: none;
 }
 
-.kalam-font {
-  font-family: 'Kalam', cursive;
+/* Forms */
+.form-control, .form-select {
+  border-radius: 8px;
+  padding: 12px;
+  border: 2px solid #e9ecef;
+  transition: border-color 0.3s ease;
 }
 
-.roboto-font{
-  color: 'green';
-  font-Family: 'Roboto', sans-serif;
+.form-control:focus, .form-select:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
-.solution-image{
-  max-width: 100%; /* Adjust the value as needed */
-  height: auto; /* Maintain aspect ratio */
+/* Loading States */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
 }
 
-.custom-card {
-  max-width: 400px; /* Adjust the maximum width as needed */
-  margin: 0 auto; /* Center the card horizontally */
+/* Responsive */
+@media (max-width: 768px) {
+  .stat-card {
+    margin-bottom: 1rem;
+  }
+  
+  .wallet-btn {
+    font-size: 0.85rem;
+    padding: 6px 15px;
+  }
 }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+  animation: fadeIn 0.6s ease;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  padding: 100px 0;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+  opacity: 0.9;
+  margin-bottom: 30px;
+}
+
+/* Stats Section */
+.stats-section {
+  padding: 60px 0;
+  background-color: white;
+}
+
+.stat-item {
+  text-align: center;
+  padding: 30px;
+}
+
+.stat-number {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #28a745;
+}
+
+.stat-label {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin-top: 10px;
+}
+
+/* Utility Classes */
+.text-green { color: #28a745 !important; }
+.bg-light-green { background-color: #d4edda !important; }
+.border-green { border-color: #28a745 !important; }
 
 .custom-margin-top {
   margin-top: 100px;

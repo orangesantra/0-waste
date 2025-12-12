@@ -1,66 +1,136 @@
-import React, {useState} from 'react'
-import LoginRegister from './LoginRegister'
-import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useWeb3 } from '../context/Web3Context';
+import { shortenAddress } from '../utils/helpers';
 
-export default function Navbar({login, setLogin}) {
-
+export default function Navbar() {
+  const { account, connected, connectWallet, disconnectWallet, loading, chainId } = useWeb3();
   const navigate = useNavigate();
-  const handleLogo = () =>{
-    navigate('/');
-  }
 
-  const navItemHandler =() =>{
-    window.alert("Please Login or Register first!")
-  }
+  const handleConnectWallet = async () => {
+    if (connected) {
+      disconnectWallet();
+    } else {
+      await connectWallet();
+    }
+  };
+
+  const getNetworkName = () => {
+    if (!chainId) return '';
+    return chainId === 80001 ? 'Mumbai Testnet' : 'Polygon Mainnet';
+  };
 
   return (
-    <>
-    <nav className="navbar navbar-expand-lg navbar-light navbar ">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-gradient-green">
       <div className="container-fluid">
-        <Link className="navbar-brand text-white" to="/">No Waste</Link>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" onClick={handleLogo}>
+        <Link className="navbar-brand d-flex align-items-center" to="/">
+          <span className="brand-logo">🌱</span>
+          <span className="brand-text">NoWaste Protocol</span>
+        </Link>
+        
+        <button 
+          className="navbar-toggler" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#navbarContent" 
+          aria-controls="navbarContent" 
+          aria-expanded="false" 
+          aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <div className="collapse navbar-collapse" id="navbarContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link className="nav-link active text-white" aria-current="page" to="/">Home</Link>
+              <Link className="nav-link" to="/">
+                Home
+              </Link>
             </li>
-            <li className="nav-item">
-              <a className="nav-link active text-white" aria-current="page" href="#problem">Problem</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link active text-white" aria-current="page" href="#solution">Solution</a>
-            </li>
-            <li className="nav-item dropdown">
-              <a className="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Deals
-              </a>
+            
+            {connected && (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/dashboard">
+                    Dashboard
+                  </Link>
+                </li>
+                
+                <li className="nav-item dropdown">
+                  <a 
+                    className="nav-link dropdown-toggle" 
+                    href="#" 
+                    id="dealsDropdown" 
+                    role="button" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false"
+                  >
+                    Deals
+                  </a>
+                  <ul className="dropdown-menu" aria-labelledby="dealsDropdown">
+                    <li>
+                      <Link className="dropdown-item" to="/makedeal">
+                        Create Donation
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/available">
+                        Available Deals
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className="dropdown-item" to="/mydeals">
+                        My Deals
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
 
-              {
-                login ? (
-                      <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li className='nav-item'><Link className="nav-link" to="/mydeals">My Deals</Link></li>
-                        <li className='nav-item'><Link className="nav-link" to="/makedeal">Make a Deal</Link></li>
-                        <li><hr className="dropdown-divider"/></li>
-                        <li><a className="dropdown-item" href="#">Close</a></li>
-                      </ul>                
-                ):(
-                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li className='nav-item' onClick={navItemHandler}><Link className="nav-link" to="/">My Deals </Link></li>
-                      <li className='nav-item' onClick={navItemHandler}><Link className="nav-link" to="/">Make a Deal </Link></li>
-                      <li><hr className="dropdown-divider"/></li>
-                      <li><a className="dropdown-item" href="#">Close</a></li>
-                    </ul>
-                )
-              }
-           </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/nfts">
+                    Impact NFTs
+                  </Link>
+                </li>
+              </>
+            )}
+
+            <li className="nav-item">
+              <a className="nav-link" href="#about">
+                About
+              </a>
+            </li>
           </ul>
-            <LoginRegister login={login} setLogin={setLogin}/>
+
+          <div className="d-flex align-items-center">
+            {connected && chainId && (
+              <span className="badge bg-success me-3">
+                {getNetworkName()}
+              </span>
+            )}
+            
+            <button
+              className={`btn ${connected ? 'btn-outline-light' : 'btn-warning'} wallet-btn`}
+              onClick={handleConnectWallet}
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Connecting...
+                </>
+              ) : connected ? (
+                <>
+                  {shortenAddress(account)}
+                </>
+              ) : (
+                <>
+                  Connect Wallet
+                </>
+              )}
+            </button>
+          </div>
         </div>
       </div>
     </nav>
-    </>
-  )
+  );
 }
