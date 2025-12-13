@@ -1,5 +1,16 @@
 // Network Configuration
 export const NETWORKS = {
+  VERYCHAIN: {
+    chainId: '0x1205', // 4613 in hex
+    chainName: 'VeryChain Mainnet',
+    nativeCurrency: {
+      name: 'VERY',
+      symbol: 'VERY',
+      decimals: 18
+    },
+    rpcUrls: ['https://rpc.verylabs.io'],
+    blockExplorerUrls: ['https://veryscan.io/']
+  },
   POLYGON_MAINNET: {
     chainId: '0x89',
     chainName: 'Polygon Mainnet',
@@ -26,8 +37,17 @@ export const NETWORKS = {
 
 // Contract Addresses (Update after deployment)
 export const CONTRACT_ADDRESSES = {
-  // Polygon Mumbai Testnet
-  MUMBAI: {
+  // VeryChain Mainnet (Primary Network)
+  4613: {
+    NoWasteToken: '0x0000000000000000000000000000000000000000', // Update after deployment
+    DonationManager: '0x0000000000000000000000000000000000000000',
+    ReputationSystem: '0x0000000000000000000000000000000000000000',
+    ImpactNFT: '0x0000000000000000000000000000000000000000',
+    CarbonCreditRegistry: '0x0000000000000000000000000000000000000000',
+    DAOGovernance: '0x0000000000000000000000000000000000000000'
+  },
+  // Polygon Mumbai Testnet (Testing Only)
+  80001: {
     NoWasteToken: '0x0000000000000000000000000000000000000000',
     DonationManager: '0x0000000000000000000000000000000000000000',
     ReputationSystem: '0x0000000000000000000000000000000000000000',
@@ -35,8 +55,8 @@ export const CONTRACT_ADDRESSES = {
     CarbonCreditRegistry: '0x0000000000000000000000000000000000000000',
     DAOGovernance: '0x0000000000000000000000000000000000000000'
   },
-  // Polygon Mainnet
-  MAINNET: {
+  // Polygon Mainnet (Backup Network)
+  137: {
     NoWasteToken: '0x0000000000000000000000000000000000000000',
     DonationManager: '0x0000000000000000000000000000000000000000',
     ReputationSystem: '0x0000000000000000000000000000000000000000',
@@ -114,10 +134,10 @@ export const TX_TYPES = {
 };
 
 // Supported Networks
-export const SUPPORTED_CHAIN_IDS = [80001, 137]; // Mumbai, Polygon Mainnet
+export const SUPPORTED_CHAIN_IDS = [4613, 80001, 137]; // VeryChain, Mumbai, Polygon
 
-// Default Chain ID (Mumbai for testing)
-export const DEFAULT_CHAIN_ID = 80001;
+// Default Chain ID (VeryChain Mainnet)
+export const DEFAULT_CHAIN_ID = 4613;
 
 // API Endpoints (if using backend)
 export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001';
@@ -127,6 +147,14 @@ export const IPFS_GATEWAY = 'https://gateway.pinata.cloud/ipfs/';
 
 // Block Explorer URLs
 export const EXPLORER_URLS = {
+  4613: 'https://veryscan.io',
   80001: 'https://mumbai.polygonscan.com',
   137: 'https://polygonscan.com'
+};
+
+// Network Names
+export const NETWORK_NAMES = {
+  4613: 'VeryChain',
+  80001: 'Mumbai Testnet',
+  137: 'Polygon'
 };

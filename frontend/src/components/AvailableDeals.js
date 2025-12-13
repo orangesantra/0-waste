@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useWeb3 } from '../context/Web3Context';
 import { toast } from 'react-toastify';
 import {
-  formatTokenAmount,
+  parseTokenAmount,
   getStatusText,
   getStatusColor,
   getFoodTypeText,
