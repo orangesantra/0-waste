@@ -17,7 +17,16 @@ export default function Navbar() {
 
   const getNetworkName = () => {
     if (!chainId) return '';
-    return chainId === 80001 ? 'Mumbai Testnet' : 'Polygon Mainnet';
+    switch (chainId) {
+      case 4613:
+        return 'VeryChain';
+      case 80001:
+        return 'Mumbai Testnet';
+      case 137:
+        return 'Polygon';
+      default:
+        return `Chain ${chainId}`;
+    }
   };
 
   return (

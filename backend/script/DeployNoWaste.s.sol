@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "forge-std/Script.sol";
+import "lib/forge-std/src/Script.sol";
 import "../src/NoWasteToken.sol";
 import "../src/ReputationSystem.sol";
 import "../src/DonationManager.sol";
@@ -170,3 +170,4 @@ contract DeployNoWaste is Script {
         console.log("All contracts verified!");
     }
 }
+// 66710192d3d8afd32354142e99d2fb7b5b860b466b1cbf9ca56ea7c0ca6bf823
