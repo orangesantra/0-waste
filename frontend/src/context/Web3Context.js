@@ -13,7 +13,11 @@ import {
   ReputationSystemABI,
   ImpactNFTABI,
   CarbonCreditRegistryABI,
-  DAOGovernanceABI
+  DAOGovernanceABI,
+  TokenFaucetABI,
+  CertificateMarketplaceABI,
+  CertificateTreasuryABI,
+  CarbonSubscriptionABI
 } from '../utils/contractABIs';
 import { getContractAddresses, handleTxError } from '../utils/helpers';
 
@@ -77,13 +81,41 @@ export const Web3Provider = ({ children }) => {
         signer
       );
 
+      const tokenFaucet = new ethers.Contract(
+        addresses.TokenFaucet,
+        TokenFaucetABI,
+        signer
+      );
+
+      const certificateMarketplace = new ethers.Contract(
+        addresses.CertificateMarketplace,
+        CertificateMarketplaceABI,
+        signer
+      );
+
+      const certificateTreasury = new ethers.Contract(
+        addresses.CertificateTreasury,
+        CertificateTreasuryABI,
+        signer
+      );
+
+      const carbonSubscription = new ethers.Contract(
+        addresses.CarbonSubscription,
+        CarbonSubscriptionABI,
+        signer
+      );
+
       setContracts({
         noWasteToken,
         donationManager,
         reputationSystem,
         impactNFT,
         carbonCreditRegistry,
-        daoGovernance
+        daoGovernance,
+        tokenFaucet,
+        certificateMarketplace,
+        certificateTreasury,
+        carbonSubscription
       });
     } catch (error) {
       console.error('Error initializing contracts:', error);
@@ -179,11 +211,15 @@ export const Web3Provider = ({ children }) => {
     if (!window.ethereum) return;
 
     const handleAccountsChanged = (accounts) => {
+      console.log('Account changed:', accounts);
       if (accounts.length === 0) {
+        console.log('No accounts, disconnecting...');
         disconnectWallet();
       } else if (accounts[0] !== account) {
-        setAccount(accounts[0]);
-        connectWallet();
+        console.log('New account detected:', accounts[0]);
+        console.log('Old account:', account);
+        // Reload page to reinitialize with new account
+        window.location.reload();
       }
     };
 

@@ -34,7 +34,7 @@ export default function Navbar() {
       <div className="container-fluid">
         <Link className="navbar-brand d-flex align-items-center" to="/">
           <span className="brand-logo">🌱</span>
-          <span className="brand-text">NoWaste Protocol</span>
+          <span className="brand-text">NoWaste</span>
         </Link>
         
         <button 
@@ -100,13 +100,25 @@ export default function Navbar() {
                     Impact NFTs
                   </Link>
                 </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link" to="/marketplace">
+                    🛒 Marketplace
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link" to="/faucet">
+                    🚰 Get Tokens
+                  </Link>
+                </li>
               </>
             )}
 
             <li className="nav-item">
-              <a className="nav-link" href="#about">
+              <Link className="nav-link" to="/about">
                 About
-              </a>
+              </Link>
             </li>
           </ul>
 

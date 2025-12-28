@@ -10,7 +10,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="container">
-          <h1 className="hero-title">NoWaste Protocol</h1>
+          <h1 className="hero-title">NoWaste</h1>
           <p className="hero-subtitle">
             Decentralized Food Waste Management on Polygon Blockchain
           </p>
@@ -58,76 +58,6 @@ export default function Home() {
             <div className="col-md-3 stat-item">
               <div className="stat-number">0%</div>
               <div className="stat-label">Platform Fees (2% on transactions)</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="about" className="container my-5">
-        <div className="text-center mb-5">
-          <h2 className="display-4 text-green">How It Works</h2>
-          <p className="lead text-muted">A blockchain-powered solution to food waste</p>
-        </div>
-
-        <div className="row g-4">
-          {/* Restaurant */}
-          <div className="col-md-4">
-            <div className="card h-100 text-center">
-              <div className="card-body">
-                <div style={{ fontSize: '3rem' }} className="mb-3">🍽️</div>
-                <h4 className="card-title text-success">For Restaurants</h4>
-                <p className="card-text">
-                  List excess food on the platform. Stake 1000 NOWASTE tokens (refundable). 
-                  Earn rewards and tax benefits for each completed donation.
-                </p>
-                <ul className="list-unstyled text-start">
-                  <li>✓ Earn 100+ tokens per donation</li>
-                  <li>✓ Get Impact NFT certificates</li>
-                  <li>✓ Tax deduction documentation</li>
-                  <li>✓ Reputation-based multipliers</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* NGO */}
-          <div className="col-md-4">
-            <div className="card h-100 text-center">
-              <div className="card-body">
-                <div style={{ fontSize: '3rem' }} className="mb-3">🤝</div>
-                <h4 className="card-title text-success">For NGOs</h4>
-                <p className="card-text">
-                  Browse available donations and claim what you need. Stake 500 NOWASTE tokens. 
-                  Get free food for beneficiaries with transparent tracking.
-                </p>
-                <ul className="list-unstyled text-start">
-                  <li>✓ Earn 50+ tokens per claim</li>
-                  <li>✓ Free access to quality food</li>
-                  <li>✓ Verified impact reporting</li>
-                  <li>✓ No platform fees</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          {/* Courier */}
-          <div className="col-md-4">
-            <div className="card h-100 text-center">
-              <div className="card-body">
-                <div style={{ fontSize: '3rem' }} className="mb-3">🚚</div>
-                <h4 className="card-title text-success">For Couriers</h4>
-                <p className="card-text">
-                  Deliver food from restaurants to NGOs. Stake 750 NOWASTE tokens. 
-                  Earn rewards based on distance and reputation score.
-                </p>
-                <ul className="list-unstyled text-start">
-                  <li>✓ Earn 75+ tokens per delivery</li>
-                  <li>✓ Distance-based bonuses</li>
-                  <li>✓ Flexible work opportunities</li>
-                  <li>✓ Build reputation tier</li>
-                </ul>
-              </div>
             </div>
           </div>
         </div>

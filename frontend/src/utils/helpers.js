@@ -42,9 +42,14 @@ export const shortenAddress = (address) => {
  * Get contract addresses for current chain
  */
 export const getContractAddresses = (chainId) => {
-  if (chainId === 80001) return CONTRACT_ADDRESSES.MUMBAI;
-  if (chainId === 137) return CONTRACT_ADDRESSES.MAINNET;
-  return CONTRACT_ADDRESSES.MUMBAI; // Default to testnet
+  console.log('Getting contract addresses for chainId:', chainId);
+  const addresses = CONTRACT_ADDRESSES[chainId];
+  console.log('Found addresses:', addresses);
+  if (!addresses) {
+    console.warn(`No addresses found for chainId ${chainId}, using VeryChain (4613) as default`);
+    return CONTRACT_ADDRESSES[4613];
+  }
+  return addresses;
 };
 
 /**
@@ -117,10 +122,12 @@ export const getStatusColor = (status) => {
   const colors = {
     0: 'primary',   // Listed
     1: 'info',      // Claimed
-    2: 'warning',   // Picked Up
-    3: 'success',   // Delivered
-    4: 'success',   // Verified
-    5: 'danger'     // Cancelled
+    2: 'warning',   // Courier Assigned
+    3: 'info',      // Pickup Confirmed
+    4: 'warning',   // Delivered
+    5: 'success',   // Completed
+    6: 'danger',    // Disputed
+    7: 'danger'     // Cancelled
   };
   return colors[status] || 'secondary';
 };
@@ -130,12 +137,14 @@ export const getStatusColor = (status) => {
  */
 export const getStatusText = (status) => {
   const statuses = {
-    0: 'Available',
+    0: 'Listed',
     1: 'Claimed',
-    2: 'In Transit',
-    3: 'Delivered',
-    4: 'Verified',
-    5: 'Cancelled'
+    2: 'Courier Assigned',
+    3: 'Pickup Confirmed',
+    4: 'Delivered',
+    5: 'Completed',
+    6: 'Disputed',
+    7: 'Cancelled'
   };
   return statuses[status] || 'Unknown';
 };

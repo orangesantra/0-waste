@@ -35,16 +35,20 @@ export const NETWORKS = {
   }
 };
 
-// Contract Addresses (Update after deployment)
+// Contract Addresses (Updated December 28, 2025)
 export const CONTRACT_ADDRESSES = {
   // VeryChain Mainnet (Primary Network)
   4613: {
-    NoWasteToken: '0x87bD0c0d09e7656af66D957C4C022183879A4E38',
-    DonationManager: '0xFD02f32CeF8728F1f992D2C5D555d0D2E828d8AE',
-    ReputationSystem: '0x1fbBDD7556d15B013f87AB81710616b723e0ef51',
-    ImpactNFT: '0x0D1F4146f3d4448bc632243ec8A99E753cB1e795',
-    CarbonCreditRegistry: '0x85BB687Cadd0a9634165d0448F3E0649c09D669a',
-    DAOGovernance: '0x02282a94a68d373DeC1b0f1A5b0fc66C3C7E39d4'
+    NoWasteToken: '0x6F7D3eF5aeE74ee251DB683a9092DB497F13A7a9',
+    DonationManager: '0x8cae686969Ca2329656CED848dc4b42E6C594bBb',
+    ReputationSystem: '0x3B3052A9A2D34F3179A92c0CC33bA154Aa0eF495',
+    ImpactNFT: '0xCD05E4b28fd2608830ac14f6f509a11d590A78FA',
+    CarbonCreditRegistry: '0x0410bd7cA7C47Adb4F1522eE2843f699D39cA03A',
+    DAOGovernance: '0xA2Ec8265B755eBC9B60B2AF7C54f665f5E0f78Fa',
+    TokenFaucet: '0xd459E589cc0F0b8537b1Cccb99e96ef438eb7A32',
+    CertificateMarketplace: '0xB368485b6c747Dc98db9Cfaa3806cA3692192596',
+    CertificateTreasury: '0xC3F86FFA5126D1f67f568D5804dAbBE043C35De1',
+    CarbonSubscription: '0x6d0e4eb5f5337577b341456eDe612EF4FdC9cb0E'
   },
   // Polygon Mumbai Testnet (Testing Only)
   80001: {

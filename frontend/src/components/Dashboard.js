@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useWeb3 } from '../context/Web3Context';
 import { formatTokenAmount, getReputationTier, formatCO2 } from '../utils/helpers';
 import { toast } from 'react-toastify';
+import { ethers } from 'ethers';
 
 export default function Dashboard() {
   const { account, connected, contracts } = useWeb3();
   const [loading, setLoading] = useState(true);
+  const [staking, setStaking] = useState(false);
+  const [unstaking, setUnstaking] = useState(false);
+  const [stakeAmount, setStakeAmount] = useState('');
+  const [unstakeAmount, setUnstakeAmount] = useState('');
   const [stats, setStats] = useState({
     tokenBalance: '0',
     stakedBalance: '0',
@@ -25,40 +30,146 @@ export default function Dashboard() {
     try {
       setLoading(true);
 
+      console.log('Fetching dashboard data for:', account);
+
       // Fetch token balance
       const balance = await contracts.noWasteToken.balanceOf(account);
-      const stakedBal = await contracts.noWasteToken.getStakedBalance(account);
+      console.log('Token balance:', balance.toString());
+      
+      const stakedBal = await contracts.noWasteToken.stakedBalance(account);
+      console.log('Staked balance:', stakedBal.toString());
 
       // Fetch reputation
-      const reputation = await contracts.reputationSystem.getReputation(account);
+      let reputation;
+      try {
+        reputation = await contracts.reputationSystem.getUserReputation(account);
+        console.log('Reputation:', reputation);
+      } catch (err) {
+        console.log('Reputation not initialized yet:', err.message);
+        // Create default reputation if not initialized
+        reputation = {
+          score: 0,
+          totalDonations: 0,
+          successfulDonations: 0,
+          cancelledDonations: 0,
+          consecutiveSuccesses: 0
+        };
+      }
 
       // Fetch NFT count
-      const nftCount = await contracts.impactNFT.balanceOf(account);
+      let nftCount = 0;
+      try {
+        nftCount = await contracts.impactNFT.balanceOf(account);
+        console.log('NFT count:', nftCount.toString());
+      } catch (err) {
+        console.log('NFT count error:', err.message);
+      }
 
       // Fetch carbon credits
-      const carbonCredits = await contracts.carbonCreditRegistry.getCarbonCredits(account);
+      let carbonCredits = 0;
+      try {
+        carbonCredits = await contracts.carbonCreditRegistry.getUserCredits(account);
+      } catch (err) {
+        console.log('Carbon credits not available:', err.message);
+      }
 
       setStats({
         tokenBalance: formatTokenAmount(balance),
         stakedBalance: formatTokenAmount(stakedBal),
         reputation: {
           score: Number(reputation.score),
-          totalDeals: Number(reputation.totalDeals),
-          successfulDeals: Number(reputation.successfulDeals),
-          failedDeals: Number(reputation.failedDeals),
-          consecutiveSuccess: Number(reputation.consecutiveSuccess)
+          totalDeals: Number(reputation.totalDonations),
+          successfulDeals: Number(reputation.successfulDonations),
+          failedDeals: Number(reputation.cancelledDonations),
+          consecutiveSuccess: Number(reputation.consecutiveSuccesses)
         },
         nftCount: Number(nftCount),
         totalCO2: formatTokenAmount(carbonCredits, 0),
-        totalDeals: Number(reputation.totalDeals)
+        totalDeals: Number(reputation.totalDonations)
       });
 
+      console.log('Dashboard data loaded successfully');
       setLoading(false);
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
+      console.error('Error details:', error.message);
       toast.error('Failed to load dashboard data');
       setLoading(false);
     }
+  };
+
+  const handleStake = async () => {
+    if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
+      toast.error('Please enter a valid amount');
+      return;
+    }
+
+    const amount = ethers.parseEther(stakeAmount);
+    const balance = ethers.parseEther(stats.tokenBalance);
+
+    if (amount > balance) {
+      toast.error('Insufficient balance');
+      return;
+    }
+
+    setStaking(true);
+    try {
+      const tx = await contracts.noWasteToken.stake(amount);
+      toast.info('Staking tokens... Please wait for confirmation.');
+      
+      await tx.wait();
+      
+      toast.success(`Successfully staked ${stakeAmount} NOWASTE tokens!`);
+      setStakeAmount('');
+      fetchDashboardData(); // Refresh data
+    } catch (error) {
+      console.error('Error staking tokens:', error);
+      const message = error.reason || error.message || 'Failed to stake tokens';
+      toast.error(message);
+    } finally {
+      setStaking(false);
+    }
+  };
+
+  const handleUnstake = async () => {
+    if (!unstakeAmount || parseFloat(unstakeAmount) <= 0) {
+      toast.error('Please enter a valid amount');
+      return;
+    }
+
+    const amount = ethers.parseEther(unstakeAmount);
+    const staked = ethers.parseEther(stats.stakedBalance);
+
+    if (amount > staked) {
+      toast.error('Insufficient staked balance');
+      return;
+    }
+
+    setUnstaking(true);
+    try {
+      const tx = await contracts.noWasteToken.unstake(amount);
+      toast.info('Unstaking tokens... Please wait for confirmation.');
+      
+      await tx.wait();
+      
+      toast.success(`Successfully unstaked ${unstakeAmount} NOWASTE tokens!`);
+      setUnstakeAmount('');
+      fetchDashboardData(); // Refresh data
+    } catch (error) {
+      console.error('Error unstaking tokens:', error);
+      const message = error.reason || error.message || 'Failed to unstake tokens';
+      toast.error(message);
+    } finally {
+      setUnstaking(false);
+    }
+  };
+
+  const setMaxStake = () => {
+    setStakeAmount(stats.tokenBalance);
+  };
+
+  const setMaxUnstake = () => {
+    setUnstakeAmount(stats.stakedBalance);
   };
 
   if (!connected) {
@@ -132,6 +243,99 @@ export default function Dashboard() {
               <h6 className="card-subtitle mb-2 opacity-75">CO₂ Prevented</h6>
               <h3 className="card-title mb-0">{stats.totalCO2}</h3>
               <small>kg</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Staking Section */}
+      <div className="row mb-4">
+        <div className="col-12">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title mb-4">💰 Manage Staking</h5>
+              <div className="alert alert-info mb-3">
+                <strong>Staking Requirements:</strong>
+                <ul className="mb-0 mt-2">
+                  <li>Restaurant: 1000 NOWASTE to create donations</li>
+                  <li>NGO: 500 NOWASTE to claim donations</li>
+                  <li>Courier: 750 NOWASTE to accept deliveries</li>
+                </ul>
+              </div>
+              
+              <div className="row">
+                {/* Stake Tokens */}
+                <div className="col-md-6">
+                  <div className="card bg-light">
+                    <div className="card-body">
+                      <h6 className="card-subtitle mb-3">Stake Tokens</h6>
+                      <div className="input-group mb-2">
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder="Amount to stake"
+                          value={stakeAmount}
+                          onChange={(e) => setStakeAmount(e.target.value)}
+                          disabled={staking}
+                        />
+                        <button
+                          className="btn btn-outline-secondary"
+                          onClick={setMaxStake}
+                          disabled={staking}
+                        >
+                          MAX
+                        </button>
+                      </div>
+                      <small className="text-muted d-block mb-3">
+                        Available: {parseFloat(stats.tokenBalance).toFixed(2)} NOWASTE
+                      </small>
+                      <button
+                        className="btn btn-success w-100"
+                        onClick={handleStake}
+                        disabled={staking || !stakeAmount}
+                      >
+                        {staking ? 'Staking...' : 'Stake Tokens'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Unstake Tokens */}
+                <div className="col-md-6">
+                  <div className="card bg-light">
+                    <div className="card-body">
+                      <h6 className="card-subtitle mb-3">Unstake Tokens</h6>
+                      <div className="input-group mb-2">
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder="Amount to unstake"
+                          value={unstakeAmount}
+                          onChange={(e) => setUnstakeAmount(e.target.value)}
+                          disabled={unstaking}
+                        />
+                        <button
+                          className="btn btn-outline-secondary"
+                          onClick={setMaxUnstake}
+                          disabled={unstaking}
+                        >
+                          MAX
+                        </button>
+                      </div>
+                      <small className="text-muted d-block mb-3">
+                        Staked: {parseFloat(stats.stakedBalance).toFixed(2)} NOWASTE
+                      </small>
+                      <button
+                        className="btn btn-warning w-100"
+                        onClick={handleUnstake}
+                        disabled={unstaking || !unstakeAmount}
+                      >
+                        {unstaking ? 'Unstaking...' : 'Unstake Tokens'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

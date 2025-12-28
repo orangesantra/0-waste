@@ -27,6 +27,10 @@ export default function MakeADeal() {
   });
 
   useEffect(() => {
+    console.log('MakeADeal - connected:', connected);
+    console.log('MakeADeal - account:', account);
+    console.log('MakeADeal - contracts:', contracts);
+    console.log('MakeADeal - noWasteToken exists:', !!contracts.noWasteToken);
     if (connected && contracts.noWasteToken) {
       fetchBalance();
     }
@@ -34,10 +38,16 @@ export default function MakeADeal() {
 
   const fetchBalance = async () => {
     try {
+      console.log('Fetching balance for account:', account);
+      console.log('Token contract address:', contracts.noWasteToken?.target || contracts.noWasteToken?.address);
       const balance = await contracts.noWasteToken.balanceOf(account);
-      setUserBalance(formatTokenAmount(balance));
+      console.log('Raw balance:', balance.toString());
+      const formatted = formatTokenAmount(balance);
+      console.log('Formatted balance:', formatted);
+      setUserBalance(formatted);
     } catch (error) {
       console.error('Error fetching balance:', error);
+      console.error('Error details:', error.message);
     }
   };
 
@@ -117,40 +127,55 @@ export default function MakeADeal() {
         return;
       }
 
-      // Check allowance
-      const allowance = await contracts.noWasteToken.allowance(
-        account,
-        contracts.donationManager.target
-      );
-
-      // Step 1: Approve tokens if needed
-      if (allowance < requiredStake) {
-        toast.info(`Approving ${STAKE_AMOUNTS.RESTAURANT} NOWASTE tokens...`);
-        const approveTx = await contracts.noWasteToken.approve(
-          contracts.donationManager.target,
-          requiredStake
-        );
+      // Check current staked balance
+      const stakedBalance = await contracts.noWasteToken.stakedBalance(account);
+      console.log('Current staked balance:', stakedBalance.toString());
+      
+      // Step 1: Stake tokens if needed
+      if (stakedBalance < requiredStake) {
+        const amountToStake = requiredStake - stakedBalance;
+        toast.info(`Staking ${formatTokenAmount(amountToStake)} NOWASTE tokens...`);
         
-        const approveReceipt = await approveTx.wait();
-        toast.success('Tokens approved!');
+        const stakeTx = await contracts.noWasteToken.stake(amountToStake);
+        const stakeReceipt = await stakeTx.wait();
+        toast.success('Tokens staked successfully!');
         
-        // Show transaction link
-        const explorerUrl = getExplorerUrl(chainId, approveReceipt.hash);
-        console.log('Approval tx:', explorerUrl);
+        const explorerUrl = getExplorerUrl(chainId, stakeReceipt.hash);
+        console.log('Stake tx:', explorerUrl);
       }
 
       // Step 2: Create donation
       toast.info('Creating donation listing...');
       
-      // Calculate expiry timestamp
-      const expiryTime = Math.floor(Date.now() / 1000) + (parseInt(formData.expiryHours) * 3600);
+      // Calculate pickup time window (start: 5 minutes from now, end: start + expiryHours)
+      const pickupTimeStart = Math.floor(Date.now() / 1000) + 300; // 5 minutes from now
+      const pickupTimeEnd = pickupTimeStart + (parseInt(formData.expiryHours) * 3600);
+      
+      // Market value: use weight in kg (can be converted to token value later)
+      const marketValue = parseTokenAmount(formData.weightKg || '1');
+      
+      // Ensure all string fields are properly formatted
+      const foodType = formData.foodType || 'Veg';
+      const quantity = parseInt(formData.quantity) || 1;
+      const location = formData.location || 'Not specified';
+      
+      console.log('Creating donation with params:', {
+        foodType,
+        quantity,
+        marketValue: marketValue.toString(),
+        pickupTimeStart,
+        pickupTimeEnd,
+        location
+      });
       
       const createTx = await contracts.donationManager.createDonation(
-        formData.foodType,
-        formData.quantity,
-        formData.weightKg,
-        formData.location,
-        expiryTime
+        foodType,
+        quantity,
+        marketValue,
+        pickupTimeStart,
+        pickupTimeEnd,
+        location,
+        '' // photoHash - empty for now, can be added later with IPFS
       );
 
       const receipt = await createTx.wait();

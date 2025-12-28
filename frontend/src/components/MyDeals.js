@@ -3,6 +3,7 @@ import { useWeb3 } from '../context/Web3Context';
 import { toast } from 'react-toastify';
 import {
   formatDate,
+  formatTokenAmount,
   getStatusText,
   getStatusColor,
   getFoodTypeText,
@@ -28,10 +29,37 @@ export default function MyDeals() {
   const fetchUserDeals = async () => {
     try {
       setLoading(true);
-      const dealIds = await contracts.donationManager.getUserDonations(account);
+      
+      console.log('Fetching deals for account:', account);
+      
+      // Fetch donations for all roles the user might have
+      const restaurantDeals = await contracts.donationManager.getRestaurantDonations(account);
+      console.log('Restaurant deals:', restaurantDeals);
+      
+      const ngoDeals = await contracts.donationManager.getNGODonations(account);
+      console.log('NGO deals:', ngoDeals);
+      
+      const courierDeals = await contracts.donationManager.getCourierDeliveries(account);
+      console.log('Courier deals:', courierDeals);
+      
+      // Combine all deal IDs (use Set to avoid duplicates)
+      const allDealIds = [...new Set([
+        ...restaurantDeals.map(id => id.toString()),
+        ...ngoDeals.map(id => id.toString()),
+        ...courierDeals.map(id => id.toString())
+      ])];
+      
+      console.log('All deal IDs combined:', allDealIds);
+      
+      if (allDealIds.length === 0) {
+        console.log('No deals found');
+        setDeals([]);
+        setLoading(false);
+        return;
+      }
       
       const dealsData = await Promise.all(
-        dealIds.map(async (id) => {
+        allDealIds.map(async (id) => {
           const donation = await contracts.donationManager.getDonation(id);
           
           // Determine user role in this deal
@@ -44,16 +72,19 @@ export default function MyDeals() {
             role = 'courier';
           }
 
+          console.log(`Deal #${id}: status=${donation.status}, role=${role}, restaurant=${donation.restaurant}, ngo=${donation.ngo}, courier=${donation.courier}`);
+
           return {
             id: id.toString(),
             restaurant: donation.restaurant,
             ngo: donation.ngo,
             courier: donation.courier,
-            foodType: Number(donation.foodType),
+            foodType: donation.foodType,
             quantity: Number(donation.quantity),
-            weightKg: Number(donation.weightKg),
+            marketValue: formatTokenAmount(donation.marketValue),
             location: donation.location,
-            expiryTime: Number(donation.expiryTime),
+            pickupTimeStart: Number(donation.pickupTimeStart),
+            pickupTimeEnd: Number(donation.pickupTimeEnd),
             status: Number(donation.status),
             createdAt: Number(donation.createdAt),
             role
@@ -61,10 +92,12 @@ export default function MyDeals() {
         })
       );
 
+      console.log('All deals loaded:', dealsData);
       setDeals(dealsData);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching deals:', error);
+      console.error('Error details:', error.message);
       toast.error('Failed to load your deals');
       setLoading(false);
     }
@@ -106,7 +139,7 @@ export default function MyDeals() {
       const tx = await contracts.donationManager.confirmDelivery(dealId, proofUri);
       await tx.wait();
 
-      toast.success('Delivery confirmed! 🎉 You earned tokens and an Impact NFT!');
+      toast.success('Delivery confirmed! 🎉');
       
       const explorerUrl = getExplorerUrl(chainId, tx.hash);
       console.log('Delivery tx:', explorerUrl);
@@ -121,12 +154,40 @@ export default function MyDeals() {
     }
   };
 
+  const handleConfirmReceipt = async (dealId) => {
+    try {
+      setConfirmingId(dealId);
+      setActionType('receipt');
+
+      toast.info('Confirming receipt...');
+      const tx = await contracts.donationManager.confirmReceipt(dealId);
+      await tx.wait();
+
+      toast.success('Receipt confirmed! 🎉 Donation completed! All parties earned rewards and NFTs!');
+      
+      const explorerUrl = getExplorerUrl(chainId, tx.hash);
+      console.log('Receipt tx:', explorerUrl);
+
+      fetchUserDeals(); // Refresh list
+    } catch (error) {
+      console.error('Error confirming receipt:', error);
+      toast.error(handleTxError(error));
+    } finally {
+      setConfirmingId(null);
+      setActionType(null);
+    }
+  };
+
   const canConfirmPickup = (deal) => {
-    return deal.role === 'restaurant' && deal.status === 1; // Claimed
+    return deal.role === 'restaurant' && deal.status === 2; // COURIER_ASSIGNED
   };
 
   const canConfirmDelivery = (deal) => {
-    return deal.role === 'ngo' && deal.status === 2; // Picked up
+    return deal.role === 'courier' && deal.status === 3; // PICKUP_CONFIRMED
+  };
+
+  const canConfirmReceipt = (deal) => {
+    return deal.role === 'ngo' && deal.status === 4; // DELIVERED
   };
 
   const getFilteredDeals = () => {
@@ -217,6 +278,9 @@ export default function MyDeals() {
                   <div>
                     <strong>Deal #{deal.id}</strong>
                     {getRoleBadge(deal.role)}
+                    {deal.role === 'unknown' && (
+                      <span className="badge bg-secondary ms-2">Not Your Deal</span>
+                    )}
                   </div>
                   <span className={`badge bg-${getStatusColor(deal.status)}`}>
                     {getStatusText(deal.status)}
@@ -312,7 +376,7 @@ export default function MyDeals() {
 
                       {canConfirmDelivery(deal) && (
                         <button
-                          className="btn btn-success w-100"
+                          className="btn btn-success w-100 mb-2"
                           onClick={() => handleConfirmDelivery(deal.id)}
                           disabled={confirmingId === deal.id}
                         >
@@ -328,6 +392,39 @@ export default function MyDeals() {
                             </>
                           )}
                         </button>
+                      )}
+
+                      {canConfirmReceipt(deal) && (
+                        <button
+                          className="btn btn-primary w-100"
+                          onClick={() => handleConfirmReceipt(deal.id)}
+                          disabled={confirmingId === deal.id}
+                        >
+                          {confirmingId === deal.id && actionType === 'receipt' ? (
+                            <>
+                              <span className="spinner-border spinner-border-sm me-2"></span>
+                              Confirming...
+                            </>
+                          ) : (
+                            <>
+                              <i className="bi bi-check-circle me-2"></i>
+                              Confirm Receipt (Final Step!)
+                            </>
+                          )}
+                        </button>
+                      )}
+
+                      {/* Show message if no actions available */}
+                      {!canConfirmPickup(deal) && !canConfirmDelivery(deal) && !canConfirmReceipt(deal) && deal.status < 5 && (
+                        <div className="alert alert-info mb-0">
+                          <small>
+                            {deal.role === 'restaurant' && deal.status === 2 && 'Waiting for you to confirm pickup...'}
+                            {deal.role === 'courier' && deal.status === 3 && 'Waiting for you to confirm delivery...'}
+                            {deal.role === 'ngo' && deal.status === 4 && 'Waiting for you to confirm receipt...'}
+                            {deal.role === 'unknown' && 'You are not a participant in this donation'}
+                            {(deal.role !== 'unknown' && deal.status < 2) && 'Waiting for other parties...'}
+                          </small>
+                        </div>
                       )}
                     </div>
                   </div>

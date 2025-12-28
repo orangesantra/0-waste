@@ -19,7 +19,28 @@ export default function ImpactNFTGallery() {
     try {
       setLoading(true);
       
-      const nftIds = await contracts.impactNFT.getUserNFTs(account);
+      // Get NFT balance first
+      const balance = await contracts.impactNFT.balanceOf(account);
+      console.log('NFT balance:', balance.toString());
+      
+      if (Number(balance) === 0) {
+        setNfts([]);
+        setLoading(false);
+        return;
+      }
+      
+      // Get user's NFT token IDs
+      let nftIds = [];
+      try {
+        nftIds = await contracts.impactNFT.getRestaurantCertificates(account);
+      } catch (err) {
+        console.log('getRestaurantCertificates error:', err.message);
+        // Function error - show message
+        toast.info('Unable to fetch NFT data');
+        setNfts([]);
+        setLoading(false);
+        return;
+      }
       
       const nftsData = await Promise.all(
         nftIds.map(async (tokenId) => {
@@ -31,7 +52,7 @@ export default function ImpactNFTGallery() {
             donationId: impactData.donationId.toString(),
             co2Prevented: Number(impactData.co2Prevented),
             timestamp: Number(impactData.timestamp),
-            metadataUri: impactData.metadataUri,
+            metadataUri: impactData.ipfsHash,
             tokenURI
           };
         })
@@ -41,6 +62,7 @@ export default function ImpactNFTGallery() {
       setLoading(false);
     } catch (error) {
       console.error('Error fetching NFTs:', error);
+      console.error('Error details:', error.message);
       toast.error('Failed to load Impact NFTs');
       setLoading(false);
     }
