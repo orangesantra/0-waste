@@ -24,6 +24,7 @@ export default function MyDeals() {
     if (connected && contracts.donationManager) {
       fetchUserDeals();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected, contracts]);
 
   const fetchUserDeals = async () => {

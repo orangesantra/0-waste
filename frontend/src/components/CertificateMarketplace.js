@@ -48,6 +48,7 @@ const CertificateMarketplace = () => {
     if (connected && contracts.certificateMarketplace) {
       loadMarketplaceData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected, contracts, account, activeTab]);
 
   const loadMarketplaceData = async () => {

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useWeb3 } from '../context/Web3Context';
 import { toast } from 'react-toastify';
 import { formatDate, formatCO2 } from '../utils/helpers';
-import { IPFS_GATEWAY } from '../utils/constants';
 
 export default function ImpactNFTGallery() {
   const { account, connected, contracts } = useWeb3();
@@ -13,6 +12,7 @@ export default function ImpactNFTGallery() {
     if (connected && account && contracts.impactNFT) {
       fetchUserNFTs();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected, account, contracts]);
 
   const fetchUserNFTs = async () => {

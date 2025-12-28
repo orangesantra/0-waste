@@ -34,7 +34,8 @@ export default function MakeADeal() {
     if (connected && contracts.noWasteToken) {
       fetchBalance();
     }
-  }, [connected, contracts]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [connected, contracts, account]);
 
   const fetchBalance = async () => {
     try {

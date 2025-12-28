@@ -1,11 +1,10 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useWeb3 } from '../context/Web3Context';
 import { shortenAddress } from '../utils/helpers';
 
 export default function Navbar() {
   const { account, connected, connectWallet, disconnectWallet, loading, chainId } = useWeb3();
-  const navigate = useNavigate();
 
   const handleConnectWallet = async () => {
     if (connected) {
@@ -66,16 +65,16 @@ export default function Navbar() {
                 </li>
                 
                 <li className="nav-item dropdown">
-                  <a 
-                    className="nav-link dropdown-toggle" 
-                    href="#" 
+                  <button 
+                    className="nav-link dropdown-toggle btn btn-link" 
                     id="dealsDropdown" 
                     role="button" 
                     data-bs-toggle="dropdown" 
                     aria-expanded="false"
+                    style={{border: 'none', background: 'transparent', color: 'inherit', textDecoration: 'none'}}
                   >
                     Deals
-                  </a>
+                  </button>
                   <ul className="dropdown-menu" aria-labelledby="dealsDropdown">
                     <li>
                       <Link className="dropdown-item" to="/makedeal">

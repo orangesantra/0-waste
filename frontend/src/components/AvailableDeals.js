@@ -24,6 +24,7 @@ export default function AvailableDeals() {
     if (connected && contracts.donationManager) {
       fetchAvailableDeals();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected, contracts]);
 
   const fetchAvailableDeals = async () => {

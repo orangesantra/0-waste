@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useWeb3 } from '../context/Web3Context';
-import { formatTokenAmount, getReputationTier, formatCO2 } from '../utils/helpers';
+import { formatTokenAmount, getReputationTier } from '../utils/helpers';
 import { toast } from 'react-toastify';
 import { ethers } from 'ethers';
 
@@ -24,6 +24,7 @@ export default function Dashboard() {
     if (connected && account && contracts.noWasteToken) {
       fetchDashboardData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected, account, contracts]);
 
   const fetchDashboardData = async () => {

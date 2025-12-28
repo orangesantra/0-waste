@@ -29,6 +29,7 @@ const TokenFaucet = () => {
       const interval = setInterval(loadFaucetData, 10000); // Update every 10 seconds
       return () => clearInterval(interval);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connected, contracts.tokenFaucet, account]);
 
   const loadFaucetData = async () => {

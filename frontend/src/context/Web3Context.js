@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { toast } from 'react-toastify';
 import {
-  CONTRACT_ADDRESSES,
   SUPPORTED_CHAIN_IDS,
   DEFAULT_CHAIN_ID,
   NETWORKS
@@ -19,7 +18,7 @@ import {
   CertificateTreasuryABI,
   CarbonSubscriptionABI
 } from '../utils/contractABIs';
-import { getContractAddresses, handleTxError } from '../utils/helpers';
+import { getContractAddresses } from '../utils/helpers';
 
 const Web3Context = createContext();
 
@@ -264,6 +263,7 @@ export const Web3Provider = ({ children }) => {
     };
 
     checkConnection();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const value = {
