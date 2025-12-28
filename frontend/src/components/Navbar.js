@@ -68,7 +68,6 @@ export default function Navbar() {
                   <button 
                     className="nav-link dropdown-toggle btn btn-link" 
                     id="dealsDropdown" 
-                    role="button" 
                     data-bs-toggle="dropdown" 
                     aria-expanded="false"
                     style={{border: 'none', background: 'transparent', color: 'inherit', textDecoration: 'none'}}
