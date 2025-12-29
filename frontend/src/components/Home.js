@@ -12,7 +12,7 @@ export default function Home() {
         <div className="container">
           <h1 className="hero-title">NoWaste</h1>
           <p className="hero-subtitle">
-            Decentralized Food Waste Management on Polygon Blockchain
+            Decentralized Food Waste Management on VeryChain
           </p>
           <p className="lead mb-4">
             Turn food waste into environmental impact. Earn tokens, mint NFTs, and generate carbon credits.

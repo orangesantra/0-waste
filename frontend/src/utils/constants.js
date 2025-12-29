@@ -35,7 +35,7 @@ export const NETWORKS = {
   }
 };
 
-// Contract Addresses (Updated December 28, 2025)
+// Contract Addresses (Updated December 29, 2025)
 export const CONTRACT_ADDRESSES = {
   // VeryChain Mainnet (Primary Network)
   4613: {

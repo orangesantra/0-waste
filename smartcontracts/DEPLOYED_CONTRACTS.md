@@ -9,7 +9,6 @@
 
 ## Deployer Wallet
 - **Address**: `0x70234aE0AaB5E47dB123B6176d70CaDBa925b432`
-- **Private Key**: [REDACTED]
 
 ## Active Contracts (Latest)
 
@@ -127,7 +126,6 @@ Location: `frontend/src/utils/constants.js`
 
 ### NGO Wallet
 - **Address**: `0x0CEE9C60FdE9B381fdd0d35D5Ea347e274fEa565`
-- **Private Key**: [REDACTED]
 - **Role**: NGO participant for testing donations
 - **Reputation**: Initialized
 - **Stake**: Can stake/unstake via UI
