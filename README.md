@@ -1,6 +1,72 @@
-# NoWaste Protocol - Frontend DApp
 
-A decentralized application for the NoWaste Protocol, enabling transparent food waste management in decentralized way.
+## Protocol Overview
+
+### What is NoWaste Protocol?
+
+NoWaste Protocol is a blockchain-based ecosystem that transforms food waste management through decentralization, transparency, and economic incentives. Built on VeryChain, the protocol connects restaurants, NGOs, and couriers in a trustless network where surplus food is efficiently redistributed to those in need while rewarding all participants.
+
+### How It Works
+
+The protocol operates through a **stake-to-earn** mechanism with three key participants:
+
+1. **Restaurants** create donation listings by staking 1,000 NOWASTE tokens, describing surplus food (type, quantity, location, expiry)
+2. **NGOs** browse available donations and claim them by staking 500 NOWASTE tokens, committing to accept delivery
+3. **Couriers** accept delivery jobs by staking 750 NOWASTE tokens, handling logistics between restaurants and NGOs
+
+When a deal completes successfully:
+- All participants receive their stakes back + bonus rewards
+- Restaurant earns 100 NOWASTE tokens + Impact NFT certificate
+- NGO earns 50 NOWASTE tokens
+- Courier earns 75+ NOWASTE tokens (varies by distance/reputation)
+- Everyone's reputation score increases, unlocking higher rewards
+
+If any party fails to fulfill their commitment, their stake is slashed and redistributed to honest participants.
+
+### Protocol Integration Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                        Frontend DApp                         │
+│                    (React + Ethers.js)                       │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      VeryChain Network                      │
+│                                         
+└────────────────────────┬────────────────────────────────────┘
+                         │
+        ┌────────────────┼────────────────┐
+        │                │                │
+        ▼                ▼                ▼
+┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+│ NoWasteToken │  │  Donation    │  │  Reputation  │
+│   (ERC-20)   │  │   Manager    │  │    System    │
+└──────┬───────┘  └──────┬───────┘  └──────┬───────┘
+       │                 │                  │
+       └────────┬────────┴────────┬─────────┘
+                │                 │
+        ┌───────▼────────┐  ┌────▼──────────┐
+        │   ImpactNFT    │  │  Carbon       │
+        │   (ERC-721)    │  │  Registry     │
+        └────────────────┘  └───────────────┘
+```
+
+
+
+### Key Benefits
+
+ **Trust Minimization**: Smart contracts enforce rules automatically - no central authority needed
+
+ **Economic Incentives**: All participants earn tokens and reputation for honest behavior
+
+ **Environmental Impact**: Each donation prevents CO₂ emissions, tracked permanently on-chain
+
+ **Proof of Impact**: NFT certificates serve as verifiable proof of social/environmental contribution
+
+ **Transparency**: All transactions, donations, and impacts are publicly auditable
+
+ **Community Governance**: Token holders vote on protocol upgrades, fee structures, and partnerships
 
 ## Features Implemented
 
@@ -10,59 +76,8 @@ A decentralized application for the NoWaste Protocol, enabling transparent food 
 - **React Context API**: Centralized Web3 state management
 - **Toast Notifications**: User-friendly transaction feedback
 
-### User Interface Components
 
-#### 1. **Navbar**
-- MetaMask wallet connection/disconnection
-- Network indicator (Polygon Mumbai/Mainnet)
-- Responsive navigation menu
-- Protected routes (requires wallet connection)
-
-#### 2. **Home Page**
-- Hero section with protocol overview
-- Platform statistics display
-- How It Works section (Restaurant/NGO/Courier flows)
-- Tokenomics explanation
-- Environmental impact showcase
-- Call-to-action sections
-
-#### 3. **Dashboard**
-- Token balance (available & staked)
-- Reputation score with tier system (Bronze/Silver/Gold/Platinum)
-- Impact NFT count
-- Total CO₂ prevented
-- Deal statistics (success rate, consecutive wins)
-- Quick action buttons
-
-#### 4. **Available Deals**
-- Browse all active donation listings
-- Filter by food type, location, expiry
-- Claim donations (NGO feature)
-- Auto token approval flow
-- Real-time status updates
-
-#### 5. **My Deals**
-- View user's donation history
-- Track deal status (Listed → Claimed → Delivered → Verified)
-- Confirm pickup/delivery actions
-- Transaction history
-
-#### 6. **Create Donation (Make a Deal)**
-- Form for restaurant owners
-- Token staking requirement display
-- Food type selection (Veg/Non-veg)
-- Quantity and weight inputs
-- GPS location capture
-- Smart contract submission
-
-#### 7. **Impact NFT Gallery**
-- Display all user's Impact NFTs
-- Show CO₂ prevented per NFT
-- Total environmental impact calculation
-- NFT metadata viewer
-- Download certificate feature (coming soon)
-
-## 🔗 Smart Contract Integration
+## Smart Contract Integration
 
 ### Contracts Used
 
@@ -94,35 +109,6 @@ A decentralized application for the NoWaste Protocol, enabling transparent food 
 6. **DAOGovernance** (`DAOGovernance.sol`)
    - Create proposals
    - Vote on governance decisions
-
-## 📱 User Flows
-
-### Restaurant Owner Flow
-1. Connect wallet
-2. Go to "Create Donation"
-3. Fill form (food type, quantity, location)
-4. Stake 1000 NOWASTE tokens
-5. Submit donation listing
-6. Confirm pickup when courier arrives
-7. Receive tokens + reputation + Impact NFT
-
-### NGO Flow
-1. Connect wallet
-2. Browse "Available Deals"
-3. Claim desired donation
-4. Stake 500 NOWASTE tokens
-5. Wait for courier pickup
-6. Confirm delivery receipt
-7. Receive tokens + reputation
-
-### Courier Flow
-1. Connect wallet
-2. Accept delivery job
-3. Stake 750 NOWASTE tokens
-4. Pick up from restaurant
-5. Deliver to NGO
-6. Get both confirmations
-7. Receive tokens + reputation
 
 ## User Flow Diagram
 
